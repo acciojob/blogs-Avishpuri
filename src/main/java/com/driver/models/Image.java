@@ -5,6 +5,7 @@ import org.springframework.data.annotation.Id;
 import javax.persistence.*;
 
 @Entity
+@Table
 public class Image{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,8 +20,11 @@ public class Image{
 
     }
 
-    public Image(int id, String description, String dimensions) {
-        this.id = id;
+    @ManyToOne
+    @JoinColumn
+    private Blog blog;
+
+    public Image(String description, String dimensions) {
         this.description = description;
         this.dimensions = dimensions;
     }
@@ -48,7 +52,12 @@ public class Image{
     public void setDimensions(String dimensions) {
         this.dimensions = dimensions;
     }
-    @ManyToOne
-    @JoinColumn
-    private Blog blog;
+
+    public Blog getBlog() {
+        return blog;
+    }
+
+    public void setBlog(Blog blog) {
+        this.blog = blog;
+    }
 }

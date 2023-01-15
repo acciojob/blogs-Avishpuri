@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Table
 public class User{
 
     @Id
@@ -21,8 +22,16 @@ public class User{
 @Column(nullable = false)
     private String lastName;
 
-    public User(int id, String username, String password, String fistName, String lastName) {
-        this.id = id;
+
+     public User(){
+
+     }
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    @JoinColumn
+    private List<Blog> blogList;
+
+    public User(String username, String password, String fistName, String lastName) {
         this.username = username;
         this.password = password;
         this.fistName = fistName;
@@ -68,12 +77,12 @@ public class User{
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-     public User(){
 
-     }
+    public List<Blog> getBlogList() {
+        return blogList;
+    }
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    @JoinColumn
-    private List<Blog> blog;
-
+    public void setBlogList(List<Blog> blogList) {
+        this.blogList = blogList;
+    }
 }

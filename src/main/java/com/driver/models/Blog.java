@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
+@Table
 public class Blog{
 
     @Id
@@ -18,17 +19,26 @@ public class Blog{
     @Column(nullable = false)
     private String content;
     @Column(nullable = false)
-    @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
+
     private Date pubDate;
 
 
-    public Blog(int id, String title, String content, Date pubDate) {
-        this.id = id;
+
+    @ManyToOne
+    @JoinColumn
+    @JsonIgnore
+    private User user;
+
+    @OneToMany(mappedBy = "blog",cascade = CascadeType.ALL)
+    @JoinColumn
+    private List<Image> imageList;
+
+    public Blog(String title, String content, Date pubDate) {
         this.title = title;
         this.content = content;
         this.pubDate = pubDate;
     }
+    public Blog(){}
 
     public int getId() {
         return id;
@@ -61,16 +71,20 @@ public class Blog{
     public void setPubDate(Date pubDate) {
         this.pubDate = pubDate;
     }
-    public Blog(){
 
+    public User getUser() {
+        return user;
     }
-    @ManyToOne
-    @JoinColumn
-    @JsonIgnore
-    private User user;
 
-    @OneToMany(mappedBy = "blog",cascade = CascadeType.ALL)
-    @JoinColumn
-    private List<Image> image;
+    public void setUser(User user) {
+        this.user = user;
+    }
 
+    public List<Image> getImageList() {
+        return imageList;
+    }
+
+    public void setImageList(List<Image> imageList) {
+        this.imageList = imageList;
+    }
 }
